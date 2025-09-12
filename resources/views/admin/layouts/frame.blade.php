@@ -16,6 +16,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet">
+    <!-- Datatable -->
+    <link href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -836,7 +838,8 @@
                                                 <a class="timeline-panel text-muted" href="#">
                                                     <span>10 minutes ago</span>
                                                     <h6 class="mb-0">Youtube, a video-sharing website, goes live
-                                                        <strong class="text-primary">$500</strong>.</h6>
+                                                        <strong class="text-primary">$500</strong>.
+                                                    </h6>
                                                 </a>
                                             </li>
                                             <li>
@@ -891,7 +894,8 @@
                             </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
-                                    <img src="images/profile/17.jpg" width="20" alt="" />
+                                    {{-- <img src="images/profile/17.jpg" width="20" alt="" /> --}}
+                                    <img src="{{ Storage::url("avatar/avatar-1.jpg") }}" width="20" alt="" />
                                     <div class="header-info">
                                         <span class="text-black"><strong>{{ Auth::user()->name }}</strong></span>
                                         <p class="fs-12 mb-0">Super Admin</p>
@@ -967,6 +971,12 @@
                             <li><a href="food-menu.html">Diet Food Menu</a></li>
                             <li><a href="personal-record.html">Personal Record</a></li>
                         </ul>
+                    </li>
+                    <li class="{{ request()->is('dashboard') || request()->is('Dashboard') ? 'mm-active' : '' }}">
+                        <a href="{{ route('dashboard') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-networking"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
                     </li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-television"></i>
@@ -1052,6 +1062,15 @@
                             <span class="nav-text">Widget</span>
                         </a>
                     </li>
+
+                    {{-- <li class="{{ request()->is('packages') ? 'mm-active' : '' }}"> --}}
+                    <li class="{{ $page == 'Package' ? 'mm-active' : '' }}">
+                        <a href="{{ route('packages.index') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-settings-2"></i>
+                            <span class="nav-text">Package</span>
+                        </a>
+                    </li>
+
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-notepad"></i>
                             <span class="nav-text">Forms</span>
@@ -1107,7 +1126,7 @@
                             <span class="nav-text">Logout</span>
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
+                            @csrf
                         </form>
 
                     </li>
@@ -1130,7 +1149,7 @@
             Content body start
         ***********************************-->
         <div class="content-body">
-         @yield('content')
+            @yield('content')
         </div>
         {{-- <div class="content-body">
             <!-- row -->
@@ -1596,6 +1615,10 @@
 
     <!-- Apex Chart -->
     <script src="{{ asset('vendor/apexchart/apexchart.js') }}"></script>
+
+    <!-- Datatable -->
+    <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/plugins-init/datatables.init.js') }}"></script>
 
     <!-- Dashboard 1 -->
     <script src="{{ asset('js/dashboard/dashboard-1.js') }}"></script>
