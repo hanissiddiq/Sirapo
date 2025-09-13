@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administrator Sirapo',
             'email' => 'admin@sirapo.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('mantap'),
+            'password' => bcrypt('mantap'), // passwordnya : mantap
             'remember_token' => Str::random(10),
         ]);
 
