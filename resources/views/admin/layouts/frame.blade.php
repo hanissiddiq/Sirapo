@@ -18,6 +18,8 @@
         rel="stylesheet">
     <!-- Datatable -->
     <link href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    {{-- Sweetalert --}}
+    <link href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -959,7 +961,7 @@
         <div class="deznav">
             <div class="deznav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-networking"></i>
                             <span class="nav-text">Dashboard</span>
                         </a>
@@ -971,14 +973,14 @@
                             <li><a href="food-menu.html">Diet Food Menu</a></li>
                             <li><a href="personal-record.html">Personal Record</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li class="{{ request()->is('dashboard') || request()->is('Dashboard') ? 'mm-active' : '' }}">
                         <a href="{{ route('dashboard') }}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-networking"></i>
+                            <i class="flaticon-381-speedometer"></i>
                             <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-television"></i>
                             <span class="nav-text">Apps</span>
                         </a>
@@ -1004,8 +1006,8 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    </li> --}}
+                    {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-controls-3"></i>
                             <span class="nav-text">Charts</span>
                         </a>
@@ -1017,8 +1019,8 @@
                             <li><a href="./chart-sparkline.html">Sparkline</a></li>
                             <li><a href="./chart-peity.html">Peity</a></li>
                         </ul>
-                    </li>
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    </li> --}}
+                    {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-internet"></i>
                             <span class="nav-text">Bootstrap</span>
                         </a>
@@ -1042,8 +1044,8 @@
                             <li><a href="./ui-grid.html">Grid</a></li>
 
                         </ul>
-                    </li>
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    </li> --}}
+                    {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-heart"></i>
                             <span class="nav-text">Plugins</span>
                         </a>
@@ -1056,22 +1058,22 @@
                             <li><a href="./map-jqvmap.html">Jqv Map</a></li>
                             <li><a href="./uc-lightgallery.html">Lightgallery</a></li>
                         </ul>
-                    </li>
-                    <li><a href="widget-basic.html" class="ai-icon" aria-expanded="false">
+                    </li> --}}
+                    {{-- <li><a href="widget-basic.html" class="ai-icon" aria-expanded="false">
                             <i class="flaticon-381-settings-2"></i>
                             <span class="nav-text">Widget</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     {{-- <li class="{{ request()->is('packages') ? 'mm-active' : '' }}"> --}}
                     <li class="{{ $page == 'Package' ? 'mm-active' : '' }}">
                         <a href="{{ route('packages.index') }}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-settings-2"></i>
+                            <i class="flaticon-381-folder-15"></i>
                             <span class="nav-text">Package</span>
                         </a>
                     </li>
 
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-notepad"></i>
                             <span class="nav-text">Forms</span>
                         </a>
@@ -1082,7 +1084,7 @@
                             <li><a href="form-pickers.html">Pickers</a></li>
                             <li><a href="form-validation-jquery.html">Jquery Validate</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-network"></i>
                             <span class="nav-text">Table</span>
@@ -1122,7 +1124,7 @@
                         <a href="{{ route('logout') }}"
                             class="sidebar-link d-flex align-items-center px-3 mr-2 py-2 text-start btn btn-outline-danger"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="flaticon-381-layer-1 ml-1"></i>
+                            <i class="flaticon-381-turn-off ml-1"></i>
                             <span class="nav-text">Logout</span>
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -1619,6 +1621,12 @@
     <!-- Datatable -->
     <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/plugins-init/datatables.init.js') }}"></script>
+
+    {{-- Sweetalert --}}
+    {{-- <script src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/plugins-init/sweetalert2.init.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Dashboard 1 -->
     <script src="{{ asset('js/dashboard/dashboard-1.js') }}"></script>

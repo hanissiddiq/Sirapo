@@ -97,5 +97,7 @@ class PackageController extends Controller
     public function destroy(string $id)
     {
         //
+        Package::destroy($id);
+        return redirect()->route('packages.index')->with('success', 'Package deleted successfully.');
     }
 }

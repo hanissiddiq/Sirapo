@@ -20,11 +20,26 @@
                     </div>
 
                     <div class="card-body">
-                        {{-- Alert Sukses --}}
-                        @if (session('success'))
+                        {{-- Alert Bootstrap Sukses --}}
+                        {{-- @if (session('success'))
                             <div class="alert alert-success w-100">
                                 {{ session('success') }}
                             </div>
+                        @endif --}}
+
+                        {{-- Alert Sweetalert2 Success --}}
+                         @if (session('success'))
+                            <script>
+                                window.onload = function () {
+                                    Swal.fire({
+                                        title: "Berhasil!",
+                                        text: "{{ session('success') }}",
+                                        icon: "success",
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+                                }
+                            </script>
                         @endif
 
                         {{-- Alert Error --}}
@@ -64,9 +79,11 @@
                                             <td>{{ $package->description }}</td>
                                             <td>
                                                 @if ($package->status == 'unactive')
-                                                    <span class="badge light badge-danger">{{ ucwords($package->status) }}</span>
+                                                    <span
+                                                        class="badge light badge-danger">{{ ucwords($package->status) }}</span>
                                                 @else
-                                                    <span class="badge light badge-success">{{ ucwords($package->status) }}</span>
+                                                    <span
+                                                        class="badge light badge-success">{{ ucwords($package->status) }}</span>
                                                 @endif
 
                                             </td>
@@ -75,8 +92,18 @@
                                                 <div class="d-flex">
                                                     <a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i
                                                             class="fa fa-pencil"></i></a>
-                                                    <a href="#" class="btn btn-danger shadow btn-xs sharp"><i
-                                                            class="fa fa-trash"></i></a>
+                                                    <form id="delete-form-{{ $package->id }}"
+                                                        action="{{ route('packages.destroy', $package->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-danger shadow btn-xs sharp"
+                                                            onclick="confirmDelete({{ $package->id }})">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                    {{-- <a href="{{ route('packages.destroy', $package->id) }}" class="btn btn-danger shadow btn-xs sharp"><i
+                                                            class="fa fa-trash"></i></a> --}}
                                                 </div>
                                             </td>
                                         </tr>
@@ -99,3 +126,34 @@
         </div>
     </div>
 @endsection
+
+
+{{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
+<script>
+    function confirmDelete(id) {
+         // cegah submit langsung
+
+       swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Data yang dihapus tidak bisa dikembalikan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#aaa',
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
+
+
+
+
+
+
