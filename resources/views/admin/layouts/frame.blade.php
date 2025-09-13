@@ -48,7 +48,7 @@
         ***********************************-->
         <div class="nav-header">
             <a href="{{ route('dashboard') }}" class="brand-logo">
-                <img class="logo-abbr" src="{{ asset('images/logo.png') }}" alt="">
+                <img class="logo-abbr" width="50" src="{{ asset('images/logo.png') }}" alt="">
                 <img class="logo-compact" src="{{ asset('images/logo-text.png') }}" alt="">
                 <img class="brand-title" src="{{ asset('images/logo-text.png') }}" alt="">
             </a>
@@ -1135,7 +1135,7 @@
                 </ul>
                 <div class="add-menu-sidebar">
                     <img src="images/calendar.png" alt="" class="mr-3">
-                    <p class="	font-w500 mb-0">Create Workout Plan Now</p>
+                    <p class="	font-w500 mb-0">Create Booking Plan Now</p>
                 </div>
                 <div class="copyright">
                     <p><strong>Gymove Fitness Admin Dashboard</strong> © 2020 All Rights Reserved</p>

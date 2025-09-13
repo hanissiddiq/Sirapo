@@ -81,6 +81,10 @@ class PackageController extends Controller
     public function edit(string $id)
     {
         //
+        $data['page'] = 'Package';
+        $data['judul_page'] = 'Edit Package';
+        $data['packages'] = Package::findOrFail($id);
+        return view('admin.packages.edit', $data);
     }
 
     /**
@@ -89,6 +93,31 @@ class PackageController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validated = $request->validate([
+            'package_name' => 'required|string|max:255',
+            'package_image' => 'sometimes|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'status' => 'required|string',
+        ]);
+
+        //  Simpan file jika ada
+        if ($request->hasFile('package_image')) {
+            // $imageName = time() . '.' . $request->package_image->extension();
+             // Nama file: package_20250912_153045.jpg
+            $imageName = 'package_' . date('Ymd_His') . '.' . $request->package_image->extension();
+
+            // Simpan ke storage/app/public/packages/
+            $path = $request->file('package_image')->storeAs('package', $imageName, 'public');
+
+            // Simpan path ke database (supaya bisa diakses lewat /storage)
+            $validated['package_image'] = $path;
+        }
+        // Update data ke database
+        Package::where('id', $id)->update($validated);
+
+        //Jika Berhasil
+        return redirect()->route('packages.index')->with('success', 'Package updated successfully.');
     }
 
     /**

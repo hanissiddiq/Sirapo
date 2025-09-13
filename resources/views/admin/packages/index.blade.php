@@ -74,7 +74,7 @@
                                             <td><img class="object-cover rounded-lg" width="60"
                                                     src="{{ Storage::url($package->package_image) }}" alt=""></td>
                                             {{-- <td><img class="rounded-circle" width="35" src="images/profile/small/pic1.jpg" alt=""></td> --}}
-                                            <td>{{ $package->package_name }}</td>
+                                            <td width="150">{{ $package->package_name }}</td>
                                             <td>{{ 'Rp.' . number_format($package->price, 0, ',', '.') }}</td>
                                             <td>{{ $package->description }}</td>
                                             <td>
@@ -90,7 +90,7 @@
 
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i
+                                                    <a href="{{ route('packages.edit', $package->id) }}" class="btn btn-primary shadow btn-xs sharp mr-1"><i
                                                             class="fa fa-pencil"></i></a>
                                                     <form id="delete-form-{{ $package->id }}"
                                                         action="{{ route('packages.destroy', $package->id) }}"
