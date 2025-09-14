@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Booking;
+use App\Models\Payment;
 
 class DashboardController extends Controller
 {
@@ -15,9 +17,15 @@ class DashboardController extends Controller
     {
         Auth::user();
 
+        $todayBookings = Booking::whereDate('created_at', today())->count();
+        $monthlyIncome = Payment::whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
+                                ->sum('amount');
+
         $data['page'] = 'Dashboard';
         $data['judul_page'] = 'Dashboard';
         $data['users'] = User::all();
+        $data['todayBookings'] = $todayBookings;
+        $data['monthlyIncome'] = $monthlyIncome;
         return view('admin.index', $data);
     }
 
@@ -67,5 +75,11 @@ class DashboardController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function monthlyReport()
+    {
+        $monthlyBookings = Booking::whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->get();
+        return view('admin.monthly_report', compact('monthlyBookings'));
     }
 }

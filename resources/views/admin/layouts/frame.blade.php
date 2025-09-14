@@ -1072,6 +1072,12 @@
                             <span class="nav-text">Package</span>
                         </a>
                     </li>
+                    <li class="{{ $page == 'Booking' ? 'mm-active' : '' }}">
+                        <a href="{{ url('/booking') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-pin"></i>
+                            <span class="nav-text">Booking</span>
+                        </a>
+                    </li>
 
                     {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-381-notepad"></i>

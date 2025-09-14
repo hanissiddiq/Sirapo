@@ -22,6 +22,29 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('bookings', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('package_id')->constrained('packages')->onDelete('cascade');
+        $table->string('user_id')->constrained('')->onDelete('cascade');
+        $table->date('booking_date');
+        $table->time('booking_time');
+        $table->string('status')->default('pending'); // pending, confirmed, completed
+        $table->timestamps();
+        $table->softDeletes();
+        });
+
+        Schema::create('payments', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
+        $table->enum('payment_method', ['cash', 'bank_transfer']);
+        $table->decimal('amount', 10, 2);
+        $table->text('payment_proof')->nullable();
+        $table->timestamps();
+        $table->softDeletes();
+        });
+
+
     }
 
     /**
