@@ -154,20 +154,42 @@ class BookingController extends Controller
 
     public function makePayment(Request $request, $id)
     {
-        $request->validate([
+        // $request->validate([
+        //     'payment_method' => 'required|in:cash,bank_transfer',
+        //     'amount' => 'numeric',
+        // ]);
+
+        // Validasi input
+        $validated = $request->validate([
             'payment_method' => 'required|in:cash,bank_transfer',
-            'amount' => 'numeric',
+            'amount'         => 'required|numeric|min:0',
+            // kalau mau izinkan PDF juga, jangan pakai 'image'
+            'payment_proof'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2046',
         ]);
+
+        // Handle upload bukti bayar
+        $filePath = null;
+        if ($request->hasFile('payment_proof')) {
+            $filename = 'bukti_' . now()->format('Ymd_His') . '.' .
+                        $request->file('payment_proof')->extension();
+
+            // simpan ke storage/app/public/payment_proof/...
+            $filePath = $request->file('payment_proof')
+                                ->storeAs('payment_proof', $filename, 'public');
+        }
+
+
 
         $payment = Payment::create([
             'booking_id' => $id,
-            'payment_method' => $request->payment_method,
-            'amount' => $request->amount,
+            'payment_method' => $validated['payment_method'],
+            'amount' => $validated['amount'],
+            'payment_proof' => $filePath,
             // 'amount' => $booking->package->price,
         ]);
 
         // dd($payment);
-        $metode = $request->payment_method;
+        // $metode = $validated->payment_method;
 
         $booking = Booking::find($id);
         // if ($metode == 'cash') {

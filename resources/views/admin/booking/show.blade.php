@@ -49,18 +49,23 @@
                     <h5>Bukti Pembayaran</h5>
                 </div>
                 <div class="card-body">
-                    {{-- @if($booking->payment_proof)
-                        <img src="{{ asset('storage/' . $booking->payment_proof) }}" alt="Bukti Pembayaran" class="img-fluid">
+                    <div class="justify-content-center text-center">
+                    @if($booking->payments->payment_proof)
+                        <img  src="{{ asset('storage/' . $booking->payments->payment_proof) }}" alt="Bukti Pembayaran" class="img-fluid w-50">
                     @else
-                        <p>Belum ada bukti pembayaran.</p>
-                    @endif --}}
-                    <img src="https://placehold.co/600x800?text=Bukti%20Pembayaran&font=montserrat&format=webp" alt="Bukti Pembayaran" class="img-fluid">
-                    @if ($booking->status === 'confirmed')
-                        <p class="mt-3 "><span class="badge bg-success text-light w-100">Payment has been confirmed.</span></p>
-                    @else
-                    <a href="{{ route('booking.approve', $booking->id) }}" class="btn btn-primary mt-2">Approve</a>
+                        <img src="https://placehold.co/600x800?text=Belum%20Ada%20Bukti%20Pembayaran&font=montserrat&format=webp" alt="Bukti Pembayaran" class="img-fluid">
                     @endif
-                    <a href="{{url('/booking') }}" class="btn btn-primary mt-2">Back</a>
+                    {{-- <img src="https://placehold.co/600x800?text=Bukti%20Pembayaran&font=montserrat&format=webp" alt="Bukti Pembayaran" class="img-fluid"> --}}
+                    <div class="text-start">
+
+                        @if ($booking->status === 'confirmed')
+                            <p class="mt-3 "><span class="badge bg-success text-light w-100">Payment has been confirmed.</span></p>
+                        @else
+                        <a href="{{ route('booking.approve', $booking->id) }}" class="btn btn-primary mt-2">Approve</a>
+                        @endif
+                        <a href="{{url('/booking') }}" class="btn btn-primary mt-2">Back</a>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>

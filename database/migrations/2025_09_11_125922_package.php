@@ -39,6 +39,7 @@ return new class extends Migration
         $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
         $table->enum('payment_method', ['cash', 'bank_transfer']);
         $table->decimal('amount', 10, 2);
+        $table->text('payment_proof')->nullable();
         $table->timestamps();
         $table->softDeletes();
         });

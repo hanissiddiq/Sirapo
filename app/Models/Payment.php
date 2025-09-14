@@ -11,7 +11,7 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['booking_id', 'payment_method', 'amount'];
+    protected $fillable = ['booking_id', 'payment_method', 'amount','payment_proof'];
 
     public function booking()
     {

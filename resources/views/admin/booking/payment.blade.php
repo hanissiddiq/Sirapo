@@ -9,10 +9,10 @@
         </div>
 
         <h3>Ini halaman payment</h3>
-        <form method="POST" action="{{ route('booking.makePayment', $booking->id) }}">
+        <form method="POST" action="{{ route('booking.makePayment', $booking->id) }}" enctype="multipart/form-data">
             @csrf
             <label for="booking_id">Booking ID</label>
-            <input type="text" name="booking_id" class="form-control" value="{{'#' . $booking->id }}" readonly>
+            <input type="text" name="booking_id" class="form-control" value="{{ '#' . $booking->id }}" readonly>
             <label class="mt-3" for="payment_method">Payment Method</label>
             <select id="payment_method" name="payment_method" class="form-control" required>
 
@@ -51,38 +51,59 @@
                 </div>
             </div>
 
+            {{-- <div class="form-group mt-3" id="buktipembayaran">
+                <label for="payment_proof">Upload Bukti Pembayaran (jika ada)</label>
+                <input type="file" name="payment_proof" class="form-control" accept="image/*">
+            </div> --}}
+            <div class="custom-file" id="buktipembayaran">
+                <div class="">
+                    <label for="payment_proof" class="file-label">Bukti Pembayaran</label>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Upload</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="payment_proof" name="payment_proof">
+                        <label class="custom-file-label" for="payment_proof">Choose file</label>
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-primary mt-3">Booking</button>
         </form>
     </div>
 
 
-{{-- Toggle + Copy --}}
-<script>
-    (function () {
-        const select = document.getElementById('payment_method');
-        const card   = document.getElementById('bankTransferCard');
-        const copyBtn= document.getElementById('copyBtn');
-        const acct   = document.getElementById('acctNum').innerText.trim();
+    {{-- Toggle + Copy --}}
+    <script>
+        (function() {
+            const select = document.getElementById('payment_method');
+            const card = document.getElementById('bankTransferCard');
+            const bukti = document.getElementById('buktipembayaran');
+            const copyBtn = document.getElementById('copyBtn');
+            const acct = document.getElementById('acctNum').innerText.trim();
 
-        function toggleCard() {
-            const isBT = select.value === 'bank_transfer';
-            card.classList.toggle('d-none', !isBT);
-        }
-
-        select.addEventListener('change', toggleCard);
-        document.addEventListener('DOMContentLoaded', toggleCard);
-        // In case this script runs before DOMContentLoaded:
-        toggleCard();
-
-        copyBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(acct);
-                copyBtn.innerText = 'Copied!';
-                setTimeout(() => copyBtn.innerText = 'Copy', 1500);
-            } catch (e) {
-                alert('Gagal menyalin nomor rekening.');
+            function toggleCard() {
+                const isBT = select.value === 'bank_transfer';
+                card.classList.toggle('d-none', !isBT);
+                bukti.classList.toggle('d-none', !isBT);
             }
-        });
-    })();
-</script>
+
+            select.addEventListener('change', toggleCard);
+            document.addEventListener('DOMContentLoaded', toggleCard);
+            // In case this script runs before DOMContentLoaded:
+            toggleCard();
+
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(acct);
+                    copyBtn.innerText = 'Copied!';
+                    setTimeout(() => copyBtn.innerText = 'Copy', 1500);
+                } catch (e) {
+                    alert('Gagal menyalin nomor rekening.');
+                }
+            });
+        })();
+    </script>
 @endsection
