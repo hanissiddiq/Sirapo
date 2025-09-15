@@ -26,8 +26,8 @@
                                                 </svg>
                                             </span>
                                             <div class="media-body">
-                                                <p class="fs-14 mb-2">Weekly Progress</p>
-                                                <span class="title text-black font-w600">42%</span>
+                                                <p class="fs-14 mb-2">Booking Today</p>
+                                                <span class="title text-black font-w600">{{ $todayBookings }}</span>
                                             </div>
                                         </div>
                                         <div class="progress" style="height:5px;">
@@ -59,8 +59,8 @@
                                                 </svg>
                                             </span>
                                             <div class="media-body">
-                                                <p class="fs-14 mb-2">Weekly Progress</p>
-                                                <span class="title text-black font-w600">42km</span>
+                                                <p class="fs-14 mb-2">Packages</p>
+                                                <span class="title text-black font-w600">{{ $packagesCount }}</span>
                                             </div>
                                         </div>
                                         <div class="progress" style="height:5px;">
@@ -95,8 +95,8 @@
                                                 </svg>
                                             </span>
                                             <div class="media-body">
-                                                <p class="fs-14 mb-2">Daily Cycling</p>
-                                                <span class="title text-black font-w600">230 Km</span>
+                                                <p class="fs-14 mb-2">Monthly Income</p>
+                                                <span class="title text-black font-w600">{{ "Rp." . number_format($monthlyIncome, 0, ',', '.') }}</span>
                                             </div>
                                         </div>
                                         <div class="progress" style="height:5px;">
@@ -134,8 +134,8 @@
                                                 </svg>
                                             </span>
                                             <div class="media-body">
-                                                <p class="fs-14 mb-2">Morning Yoga</p>
-                                                <span class="title text-black font-w600">18:34:21”</span>
+                                                <p class="fs-14 mb-2">Yearly Income</p>
+                                                <span class="title text-black font-w600">{{ "Rp." . number_format($yearlyIncome, 0, ',', '.') }}</span>
                                             </div>
                                         </div>
                                         <div class="progress" style="height:5px;">

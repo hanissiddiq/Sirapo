@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Package;
 use App\Models\Booking;
 use App\Models\Payment;
 
@@ -20,12 +21,17 @@ class DashboardController extends Controller
         $todayBookings = Booking::whereDate('created_at', today())->count();
         $monthlyIncome = Payment::whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
                                 ->sum('amount');
+        $yearlyIncome = Payment::whereBetween('created_at', [now()->startOfYear(), now()->endOfYear()])
+                                ->sum('amount');
+        $packagesCount = Package::count();
 
         $data['page'] = 'Dashboard';
         $data['judul_page'] = 'Dashboard';
         $data['users'] = User::all();
         $data['todayBookings'] = $todayBookings;
         $data['monthlyIncome'] = $monthlyIncome;
+        $data['yearlyIncome'] = $yearlyIncome;
+        $data['packagesCount'] = $packagesCount;
         return view('admin.index', $data);
     }
 

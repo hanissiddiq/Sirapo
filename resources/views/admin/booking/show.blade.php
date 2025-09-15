@@ -22,15 +22,19 @@
             </tr>
             <tr>
                 <th>Tanggal</th>
-                <td>{{ $booking->booking_date }}</td>
+                <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y') }}</td>
             </tr>
             <tr>
                 <th>Waktu</th>
-                <td>{{ $booking->booking_time }}</td>
+                <td>{{ \Carbon\Carbon::parse($booking->booking_time)->format('H:i') }}</td>
             </tr>
             <tr>
                 <th>Paket</th>
                 <td>{{ $booking->package->package_name }}</td>
+            </tr>
+            <tr>
+                <th>Harga</th>
+                <td>Rp.{{ number_format($booking->package->price, 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <th>Status</th>
@@ -56,7 +60,7 @@
                         <img src="https://placehold.co/600x800?text=Belum%20Ada%20Bukti%20Pembayaran&font=montserrat&format=webp" alt="Bukti Pembayaran" class="img-fluid">
                     @endif
                     {{-- <img src="https://placehold.co/600x800?text=Bukti%20Pembayaran&font=montserrat&format=webp" alt="Bukti Pembayaran" class="img-fluid"> --}}
-                    <div class="text-start">
+                    <div class="">
 
                         @if ($booking->status === 'confirmed')
                             <p class="mt-3 "><span class="badge bg-success text-light w-100">Payment has been confirmed.</span></p>
