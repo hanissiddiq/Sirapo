@@ -1,6 +1,13 @@
 @extends('admin.layouts.frame')
 @section('content')
     <div class="container-fluid">
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
         <h2>Jadwal Booking</h2>
         <form method="POST" action="{{ route('booking.store') }}">
             @csrf
