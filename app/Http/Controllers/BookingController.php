@@ -28,7 +28,20 @@ class BookingController extends Controller
         $data['judul_page'] = 'Booking';
         // Menampilkan jadwal booking pada tanggal tertentu
         $date = Carbon::today(); // Tanggal hari ini
-        $data['bookings'] = Booking::where('booking_date', $date)->get();
+
+
+        if (auth()->user()->hasRole('owner')) {
+            $data['bookings'] = Booking::all();
+        }
+       elseif (auth()->user()->hasRole('staff')) {
+            $data['bookings'] = Booking::where('booking_date', $date)->get();
+        }
+        else {
+        $data['bookings'] = auth()->user()
+        ->bookings()
+        ->where('booking_date', $date)
+        ->get();
+       }
         return view('front.index', $data);
     }
 
@@ -50,30 +63,65 @@ class BookingController extends Controller
         $user = Auth::user();
         //
         $request->validate([
+            'booking_date' => 'required|date',
             'booking_time' => 'required|date_format:H:i',
             'user_name' => 'required|string|max:255',
         ]);
 
-        $existingBooking = Booking::where('booking_date', $request->booking_date)
-                                  ->where('booking_time', $request->booking_time)
-                                  ->first();
+        // $existingBooking = Booking::where('booking_date', $request->booking_date)
+        //                           ->where('booking_time', $request->booking_time)
+        //                           ->first();
 
-        if ($existingBooking) {
-            return back()->with('error', 'Slot sudah penuh pada waktu tersebut.');
-        }
+        // if ($existingBooking) {
+        //     return back()->with('error', 'Slot sudah penuh pada waktu tersebut.');
+        // }
 
-        $booking = Booking::create([
-            'booking_date' => $request->booking_date,
-            'booking_time' => $request->booking_time,
-            'user_id' => $user->id,
-            'package_id' => $request->package_id,
-            'status' => 'pending',
-            // Asumsikan package_id 1 untuk contoh ini
-        ]);
+        //=======================start ChatGPT ==================
+        // Hitung total booking hari itu
+    $countPerDay = Booking::where('booking_date', $request->booking_date)->count();
+    if ($countPerDay >= 8) {
+        return back()->with('error', 'Kuota booking harian sudah penuh (maks 8 booking per hari).');
+    }
+
+    // Cek apakah jam tersebut sudah dipakai
+    $existsAtHour = Booking::where('booking_date', $request->booking_date)
+                           ->where('booking_time', $request->booking_time)
+                           ->exists();
+    if ($existsAtHour) {
+        return back()->with('error', 'Slot jam tersebut sudah diambil, silakan pilih jam lain.');
+    }
+
+    // Nomor antrian otomatis
+    $queueNumber = $countPerDay + 1;
+
+    $booking = Booking::create([
+        'booking_date'  => $request->booking_date,
+        'booking_time'  => $request->booking_time,
+        'user_id' => $user->id,
+        'package_id' => $request->package_id,
+        'status'        => 'pending',
+        'queue_number'  => $queueNumber,
+    ]);
+
+    return redirect()->route('booking.payment', $booking->id)
+                     ->with('success', 'Booking berhasil dibuat.');
 
 
 
-        return redirect()->route('booking.payment', $booking->id);
+    //================================end ChatGPT==================
+
+        // $booking = Booking::create([
+        //     'booking_date' => $request->booking_date,
+        //     'booking_time' => $request->booking_time,
+        //     'user_id' => $user->id,
+        //     'package_id' => $request->package_id,
+        //     'status' => 'pending',
+        //     // Asumsikan package_id 1 untuk contoh ini
+        // ]);
+
+
+
+        // return redirect()->route('booking.payment', $booking->id);
     }
 
     /**
@@ -120,6 +168,68 @@ class BookingController extends Controller
         return view('admin.booking.show', $data);
     }
 
+    public function inProgress(string $id)
+    {
+        Auth::user();
+
+         $booking = Booking::findOrFail($id);
+
+        // Update status
+        $booking->update(['status' => 'in-progress']); // pastikan 'status' fillable/unguarded
+
+        // Siapkan data untuk view (kalau memang dipakai di blade)
+        $data = [
+            'page'       => 'Booking Detail',
+            'judul_page' => 'Booking Detail',
+            'bookings'    => $booking,
+            'users'      => User::all(),
+            'packages'   => Package::all(),
+        ];
+        return view('front.index', $data);
+    }
+
+    public function cancel(string $id)
+    {
+        Auth::user();
+
+         $booking = Booking::findOrFail($id);
+
+        // Update status
+        $booking->update(['status' => 'cancel']); // pastikan 'status' fillable/unguarded
+
+        // Siapkan data untuk view (kalau memang dipakai di blade)
+        $data = [
+            'page'       => 'Booking Detail',
+            'judul_page' => 'Booking Detail',
+            'booking'    => $booking,
+            'users'      => User::all(),
+            'packages'   => Package::all(),
+            'bookings'  => Booking::all()
+        ];
+       return view('front.index', $data);
+    }
+
+
+    public function finish(string $id)
+    {
+        Auth::user();
+
+         $booking = Booking::findOrFail($id);
+
+        // Update status
+        $booking->update(['status' => 'finish']); // pastikan 'status' fillable/unguarded
+
+        // Siapkan data untuk view (kalau memang dipakai di blade)
+        $data = [
+            'page'       => 'Booking Detail',
+            'judul_page' => 'Booking Detail',
+            'booking'    => $booking,
+            'users'      => User::all(),
+            'packages'   => Package::all(),
+        ];
+        return view('front.index', $data);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -134,6 +244,58 @@ class BookingController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $user = Auth::user();
+        //
+        $request->validate([
+            'booking_date_modal' => 'required|date',
+            'booking_time_modal' => 'required|date_format:H:i',
+            'user_name_modal' => 'required|string|max:255',
+        ]);
+
+
+        // Hitung total booking hari itu
+    $countPerDay = Booking::where('booking_date', $request->booking_date_modal)->count();
+    if ($countPerDay >= 8) {
+        return back()->with('error', 'Kuota booking harian sudah penuh (maks 8 booking per hari).');
+    }
+
+    // Cek apakah jam tersebut sudah dipakai
+   $existsAtHour = Booking::where('booking_date', $request->booking_date_modal)
+                       ->where('booking_time', $request->booking_time_modal)
+                       ->where('id', '!=', $id) // abaikan dirinya sendiri
+                       ->exists();
+    if ($existsAtHour) {
+        return back()->with('error', 'Slot jam tersebut sudah diambil, silakan pilih jam lain.');
+    }
+
+    $booking = Booking::findOrFail($id);
+
+    // Nomor antrian otomatis
+    // $queueNumber = $countPerDay + 1;
+
+    // $booking = Booking::update([
+    //     'booking_date'  => $request->booking_date_modal,
+    //     'booking_time'  => $request->booking_time_modal,
+    //     'user_id' => $request->user_name_modal,
+    //     'package_id' => $request->package_id_modal,
+    //     'status'        => $request->status_modal,
+    //     'queue_number'  => $request->queueNumber_modal,
+    // ]);
+      // ✅ Perbaikan utama di sini
+    $booking = Booking::findOrFail($id);
+    $booking->update([
+        'booking_date' => $request->booking_date_modal,
+        'booking_time' => $request->booking_time_modal,
+        'user_id' => $request->user_name_modal,
+        'package_id' => $request->package_id_modal,
+        'status' => $request->status_modal,
+        'queue_number' => $request->queueNumber_modal,
+    ]);
+
+    // dd($booking);
+
+    return redirect()->route('admin.booking.index')
+                     ->with('success', 'Booking berhasil diubah.');
     }
 
     /**
@@ -141,7 +303,8 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Booking::destroy($id);
+        return redirect()->route('admin.booking.index')->with('success', 'Booking deleted successfully.');
     }
 
      public function paymentForm($id)

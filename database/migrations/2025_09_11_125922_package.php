@@ -29,6 +29,7 @@ return new class extends Migration
         $table->string('user_id')->constrained('')->onDelete('cascade');
         $table->date('booking_date');
         $table->time('booking_time');
+        $table->string('queue_number')->nullable();
         $table->string('status')->default('pending'); // pending, confirmed, completed
         $table->timestamps();
         $table->softDeletes();

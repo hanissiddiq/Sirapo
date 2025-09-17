@@ -18,6 +18,7 @@ class Booking extends Model
         'user_id',
         'package_id',
         'status',
+        'queue_number',
         'user_name', // kalau kolomnya ada
     ];
 

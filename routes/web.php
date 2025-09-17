@@ -41,7 +41,14 @@ Route::resource('packages', PackageController::class);
 Route::get('/booking', [BookingController::class, 'index'])->name('admin.booking.index');
 Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
 Route::get('/booking/{id}/show', [BookingController::class, 'show'])->name('booking.show');
+Route::get('/booking/{id}/edit', [BookingController::class, 'edit'])->name('booking.edit');
+Route::put('/booking/{id}/update', [BookingController::class, 'update'])->name('booking.update');
+Route::delete('/booking/{id}/delete', [BookingController::class, 'destroy'])->name('booking.destroy');
+
 Route::get('/booking/{id}/approve', [BookingController::class, 'approve'])->name('booking.approve');
+Route::get('/booking/{id}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
+Route::get('/booking/{id}/inprogress', [BookingController::class, 'inProgress'])->name('booking.inprogress');
+Route::get('/booking/{id}/finish', [BookingController::class, 'finish'])->name('booking.finish');
 Route::get('/booking/{id}/payment', [BookingController::class, 'paymentForm'])->name('booking.payment');
 Route::post('/booking/{id}/payment', [BookingController::class, 'makePayment'])->name('booking.makePayment');
 

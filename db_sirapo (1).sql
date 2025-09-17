@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 17, 2025 at 02:02 PM
+-- Generation Time: Sep 14, 2025 at 03:36 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.28
 
@@ -34,7 +34,6 @@ CREATE TABLE `bookings` (
   `booking_date` date NOT NULL,
   `booking_time` time NOT NULL,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
-  `queue_number` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -44,17 +43,13 @@ CREATE TABLE `bookings` (
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `package_id`, `user_id`, `booking_date`, `booking_time`, `status`, `queue_number`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(19, 1, '4', '2025-09-15', '04:00:00', 'pending', 0, '2025-09-14 21:21:12', '2025-09-14 21:21:12', NULL),
-(20, 1, '1', '2025-09-16', '16:00:00', 'confirmed', 0, '2025-09-15 21:26:38', '2025-09-15 21:26:55', NULL),
-(21, 2, '1', '2025-09-16', '16:45:00', 'pending', 0, '2025-09-15 21:28:08', '2025-09-17 06:42:50', '2025-09-17 06:42:50'),
-(22, 2, '1', '2025-09-25', '05:00:00', 'pending', 0, '2025-09-15 21:33:24', '2025-09-15 21:33:24', NULL),
-(23, 2, '1', '2025-09-16', '09:00:00', 'pending', 3, '2025-09-16 06:09:02', '2025-09-16 06:09:02', NULL),
-(24, 3, '1', '2025-09-17', '08:00:00', 'in-progress', 1, '2025-09-16 20:30:29', '2025-09-17 06:07:02', NULL),
-(25, 2, '1', '2025-09-17', '12:00:00', 'pending', 2, '2025-09-17 01:01:34', '2025-09-17 06:03:50', '2025-09-17 06:03:50'),
-(26, 2, '1', '2025-09-17', '14:00:00', 'confirmed', 3, '2025-09-17 01:51:08', '2025-09-17 02:26:53', NULL),
-(27, 1, '1', '2025-09-17', '16:00:00', 'finish', 4, '2025-09-17 02:26:35', '2025-09-17 03:17:02', NULL),
-(28, 1, '4', '2025-09-17', '11:00:00', 'pending', 4, '2025-09-17 06:34:22', '2025-09-17 06:34:22', NULL);
+INSERT INTO `bookings` (`id`, `package_id`, `user_id`, `booking_date`, `booking_time`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(13, 2, '1', '2025-09-14', '09:20:00', 'pending', '2025-09-13 19:21:08', '2025-09-13 19:21:08', NULL),
+(14, 3, '1', '2025-09-14', '21:00:00', 'pending', '2025-09-13 19:22:44', '2025-09-13 19:22:44', NULL),
+(15, 2, '1', '2025-09-14', '16:40:00', 'pending', '2025-09-13 20:05:08', '2025-09-13 20:05:08', NULL),
+(16, 2, '1', '2025-09-14', '20:10:00', 'pending', '2025-09-13 20:08:15', '2025-09-13 20:08:15', NULL),
+(17, 3, '1', '2025-09-14', '04:15:00', 'pending', '2025-09-13 20:13:04', '2025-09-13 20:29:16', NULL),
+(18, 2, '1', '2025-09-14', '11:36:00', 'pending', '2025-09-13 20:35:44', '2025-09-13 20:35:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -159,41 +154,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
-(4, '2025_09_11_125922_package', 1),
-(5, '2025_09_15_021951_create_permission_tables', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `model_has_permissions`
---
-
-CREATE TABLE `model_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `model_has_roles`
---
-
-CREATE TABLE `model_has_roles` (
-  `role_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `model_has_roles`
---
-
-INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(1, 'App\\Models\\User', 1),
-(3, 'App\\Models\\User', 2),
-(2, 'App\\Models\\User', 4);
+(4, '2025_09_11_125922_package', 1);
 
 -- --------------------------------------------------------
 
@@ -218,7 +179,7 @@ CREATE TABLE `packages` (
 --
 
 INSERT INTO `packages` (`id`, `package_name`, `package_image`, `price`, `description`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Foto Wedding', 'package/package_20250913_143534.jpg', '540000.00', 'Foto weding dengan baju adat dan beberapa set lampu yang bisa menambah cahya yang bagus pada hasil photo', 'active', '2025-09-13 07:35:34', '2025-09-16 06:28:00', NULL),
+(1, 'Foto Wedding', 'package/package_20250913_143534.jpg', '540000.00', 'Foto weding dengan baju adat dan beberap set lampu yang bisa menambah cahya yang bagus pada hasil photo', 'active', '2025-09-13 07:35:34', '2025-09-13 07:35:34', NULL),
 (2, 'Foto Famiy', 'package/package_20250913_143630.jpg', '860000.00', 'Foto bersama keluarga dan pose formal bisa juga bebas cocok untuk abadikan moment bersama keluarga', 'active', '2025-09-13 07:36:30', '2025-09-13 07:36:30', NULL),
 (3, 'Foto Wisuda', 'package/package_20250913_143724.jpg', '450000.00', 'Foto dengan pakai baju toga dan beberapa set tri point lighting', 'active', '2025-09-13 07:37:24', '2025-09-13 07:37:24', NULL);
 
@@ -256,64 +217,9 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `booking_id`, `payment_method`, `amount`, `payment_proof`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(22, 19, 'cash', '540000.00', NULL, '2025-09-14 21:21:24', '2025-09-14 21:21:24', NULL),
-(23, 20, 'cash', '540000.00', NULL, '2025-09-15 21:26:44', '2025-09-15 21:26:44', NULL),
-(24, 21, 'cash', '860000.00', NULL, '2025-09-15 21:28:14', '2025-09-15 21:28:14', NULL),
-(25, 22, 'cash', '860000.00', NULL, '2025-09-15 21:33:29', '2025-09-15 21:33:29', NULL),
-(26, 23, 'cash', '860000.00', NULL, '2025-09-16 06:09:09', '2025-09-16 06:09:09', NULL),
-(27, 24, 'cash', '450000.00', NULL, '2025-09-16 20:31:47', '2025-09-16 20:31:47', NULL),
-(28, 25, 'cash', '860000.00', NULL, '2025-09-17 01:01:39', '2025-09-17 01:01:39', NULL),
-(29, 26, 'cash', '860000.00', NULL, '2025-09-17 01:51:13', '2025-09-17 01:51:13', NULL),
-(30, 27, 'cash', '450000.00', NULL, '2025-09-17 02:26:40', '2025-09-17 02:26:40', NULL),
-(31, 28, 'cash', '540000.00', NULL, '2025-09-17 06:34:30', '2025-09-17 06:34:30', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `permissions`
---
-
-CREATE TABLE `permissions` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `roles`
---
-
-CREATE TABLE `roles` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `roles`
---
-
-INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'owner', 'web', '2025-09-14 19:40:13', '2025-09-14 19:40:13'),
-(2, 'customer', 'web', '2025-09-14 19:40:13', '2025-09-14 19:40:13'),
-(3, 'staff', 'web', '2025-09-17 13:39:37', '2025-09-17 13:39:37');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `role_has_permissions`
---
-
-CREATE TABLE `role_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `role_id` bigint UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(16, 13, 'bank_transfer', '860000.00', NULL, '2025-09-13 19:21:16', '2025-09-13 19:21:16', NULL),
+(17, 14, 'bank_transfer', '450000.00', NULL, '2025-09-13 20:02:54', '2025-09-13 20:02:54', NULL),
+(21, 17, 'bank_transfer', '450000.00', 'payment_proof/bukti_20250914_031318.jpg', '2025-09-13 20:13:18', '2025-09-13 20:13:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -335,7 +241,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('Jg7RnUS8frtVFRApq5AokYEUSAky6BR0rg7A0wb8', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSTAzSmNtZFFPbWRiNGEwdmUxVjdZNWxDZ2VJUGpaYURGSzRTWFhpNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ib29raW5nIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDt9', 1758117536);
+('jyDusH8EEwkSemnFJYfm2fgkP67SbaeZgPfVGQnL', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoic3RWdzZmTWpGRUxYczQzSWdIZlFRanlwaWM3eldOREJiRjBNeW5iNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ib29raW5nLzE4L3BheW1lbnQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1757820944);
 
 -- --------------------------------------------------------
 
@@ -359,9 +265,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Administrator Sirapo', 'admin@sirapo.com', '2025-09-14 19:40:12', '$2y$12$ImmtoYWygyIYylQ7wdvt4e3FtyPbhAogOYZW6vHQDccUM.I.hsmHS', 'UrvR07XXeRpfdVBGKuFic4VS1fWn7drdZgElQ1ihio5LOX1XbHbgw4wdZHVM', '2025-09-14 19:40:13', '2025-09-14 19:40:13'),
-(2, 'hanis', 'hanis@sirapo.com', NULL, '$2y$12$9UVU8BBfCRhWQ8Kj5A/2GOTykZMpBQYJBqy0FzaKUdLa4OoGCHIii', NULL, '2025-09-14 19:40:14', '2025-09-14 19:40:14'),
-(4, 'Nurhaliza', 'liza@sirapo.com', NULL, '$2y$12$sfz1Pu9UqJltModN.zgIIOYg2s5xgCJXjrRDKqtvTvwhuOEA55vLS', NULL, '2025-09-14 20:46:43', '2025-09-14 20:46:43');
+(1, 'Administrator Sirapo', 'admin@sirapo.com', '2025-09-13 19:19:52', '$2y$12$LWN0F4/LwzFWPci9zeLXAuSw6tka85MJPxJoZYjpaN1A8PKP1KQoq', 'iBeY12l79F', '2025-09-13 19:19:53', '2025-09-13 19:19:53');
 
 --
 -- Indexes for dumped tables
@@ -413,20 +317,6 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `model_has_permissions`
---
-ALTER TABLE `model_has_permissions`
-  ADD PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
-  ADD KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`);
-
---
--- Indexes for table `model_has_roles`
---
-ALTER TABLE `model_has_roles`
-  ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
-  ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
-
---
 -- Indexes for table `packages`
 --
 ALTER TABLE `packages`
@@ -444,27 +334,6 @@ ALTER TABLE `password_reset_tokens`
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `payments_booking_id_foreign` (`booking_id`);
-
---
--- Indexes for table `permissions`
---
-ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
-
---
--- Indexes for table `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`);
-
---
--- Indexes for table `role_has_permissions`
---
-ALTER TABLE `role_has_permissions`
-  ADD PRIMARY KEY (`permission_id`,`role_id`),
-  ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
 
 --
 -- Indexes for table `sessions`
@@ -489,7 +358,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -507,7 +376,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `packages`
@@ -519,25 +388,13 @@ ALTER TABLE `packages`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
-
---
--- AUTO_INCREMENT for table `permissions`
---
-ALTER TABLE `permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -550,29 +407,10 @@ ALTER TABLE `bookings`
   ADD CONSTRAINT `bookings_package_id_foreign` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `model_has_permissions`
---
-ALTER TABLE `model_has_permissions`
-  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `model_has_roles`
---
-ALTER TABLE `model_has_roles`
-  ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
-
---
 -- Constraints for table `payments`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_booking_id_foreign` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `role_has_permissions`
---
-ALTER TABLE `role_has_permissions`
-  ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

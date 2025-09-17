@@ -1,19 +1,7 @@
 @extends('admin.layouts.frame')
 @section('content')
     <div class="container-fluid">
-        @if (session('success'))
-            <script>
-                window.onload = function() {
-                    Swal.fire({
-                        title: "Berhasil!",
-                        text: "{{ session('success') }}",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            </script>
-        @elseif (session('error'))
+        @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -24,7 +12,7 @@
             $times = ['08:00', '09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00'];
         @endphp
 
-        <h2>Jadwal Booking</h2>
+        <h2>Create Data Booking</h2>
         <form method="POST" action="{{ route('booking.store') }}">
             @csrf
             <input type="date" name="booking_date" class="form-control" required>
@@ -86,10 +74,8 @@
                         <th>Waktu</th>
                         <th>Nama</th>
                         <th>Status</th>
-                        @hasanyrole('owner|staff')
-                            <th>View Detail</th>
-                            <th>Actions</th>
-                        @endhasanyrole
+                        <th>View Detail</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -134,12 +120,10 @@
                                     {{ ucfirst($booking->status) }}
                                 </span> --}}
                             </td>
-                            @hasanyrole('owner|staff')
                             <td><a href="{{ route('booking.show', $booking->id ?? 0) }}"
                                     class="btn btn-info btn-xs">Detail</a></td>
 
                             <td class="d-flex">
-
                                 {{-- <a href="{{ route('booking.edit', $booking->id) }}" class="btn btn-primary shadow btn-xs sharp mr-1"><i
                                                             class="fa fa-pencil"></i></a> --}}
                                 <!-- Tombol Edit -->
@@ -159,136 +143,97 @@
                                 <button {{-- onclick="callQueue('Nomor antrean {{ $booking->queue_number }}, atas nama {{ $booking->user->name }}, silahkan menuju ke ruang studio, Terima kasih...')" --}}
                                     onclick="callQueue('Nomor Antrean {{ $booking->queue_number }} dengan Nomor Booking {{ $booking->id }}, atas nama {{ $booking->user->name }}, silahkan menuju ke ruang studio, Terima kasih...')"
                                     class="btn-xs btn btn-primary">Call Queue</button>
-                                @endhasanyrole
                             </td>
 
                             {{-- =================================
     ================================= --}}
-                            <!-- Modal -->
-                            <div class="modal fade" id="editBookingModal{{ $booking->id }}" tabindex="-1"
-                                aria-labelledby="editBookingModalLabel{{ $booking->id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
+    <!-- Modal -->
+    <div class="modal fade" id="editBookingModal{{ $booking->id }}" tabindex="-1"
+        aria-labelledby="editBookingModalLabel{{ $booking->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
 
-                                        <!-- Header Modal -->
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="editBookingModalLabel{{ $booking->id }}">Edit
-                                                Booking
-                                                #{{ $booking->id }}</h5>
+                <!-- Header Modal -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBookingModalLabel{{ $booking->id }}">Edit Booking
+                        #{{ $booking->id }}</h5>
 
-                                            <button type="button" class="btn btn-close" data-dismiss="modal"
-                                                aria-label="Close">X</button>
-                                        </div>
+                    <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">X</button>
+                </div>
 
-                                        <!-- Body Modal -->
-                                        <div class="modal-body">
-                                            <form action="{{ route('booking.update', $booking->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
+                <!-- Body Modal -->
+                <div class="modal-body">
+                    <form action="{{ route('booking.update', $booking->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-                                                <div class="mb-3">
-                                                    <label for="user" class="form-label">Nama</label>
-                                                    <input type="hidden" name="user_name_modal"
-                                                        value="{{ $booking->user->id }}"></input>
-                                                    <input type="text" name="user" value="{{ $booking->user->name }}"
-                                                        disabled class="form-control"></input>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="queue_modal" class="form-label">Antrian</label>
-                                                    {{-- <input type="hidden" name="queueNumber_modal" value="{{ $booking->user->id }}"></input> --}}
-                                                    <input type="text" id="queue_modal" name="queueNumber_modal"
-                                                        value="{{ $booking->queue_number }}"
-                                                        class="disabled form-control"></input>
-                                                </div>
+                        <div class="mb-3">
+                            <label for="user" class="form-label">Nama</label>
+                            <input type="hidden" name="user_name" value="{{ $booking->user->id }}"></input>
+                            <input type="text" name="user" value="{{ $booking->user->name }}" disabled class="form-control"></input>
+                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="status{{ $booking->id }}"
-                                                        class="form-label">Status</label>
-                                                    <select name="status_modal" id="status{{ $booking->id }}"
-                                                        class="form-select form-control">
-                                                        <option value="pending"
-                                                            {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending
-                                                        </option>
-                                                        <option value="confirmed"
-                                                            {{ $booking->status == 'confirmed' ? 'selected' : '' }}>
-                                                            Confirmed
-                                                        </option>
-                                                        <option value="in-progress"
-                                                            {{ $booking->status == 'in-progress' ? 'selected' : '' }}>
-                                                            In-Progress</option>
-                                                        <option value="finish"
-                                                            {{ $booking->status == 'finish' ? 'selected' : '' }}>Finish
-                                                        </option>
-                                                        <option value="cancel"
-                                                            {{ $booking->status == 'cancel' ? 'selected' : '' }}>Cancel
-                                                        </option>
-                                                    </select>
-                                                </div>
+                        <div class="mb-3">
+                            <label for="status{{ $booking->id }}" class="form-label">Status</label>
+                            <select name="status" id="status{{ $booking->id }}" class="form-select form-control">
+                                <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending
+                                </option>
+                                <option value="confirmed" {{ $booking->status == 'confirmed' ? 'selected' : '' }}>Confirmed
+                                </option>
+                                <option value="in-progress" {{ $booking->status == 'in-progress' ? 'selected' : '' }}>
+                                    In-Progress</option>
+                                <option value="finish" {{ $booking->status == 'finish' ? 'selected' : '' }}>Finish</option>
+                                <option value="cancel" {{ $booking->status == 'cancel' ? 'selected' : '' }}>Cancel</option>
+                            </select>
+                        </div>
 
-                                                <div class="mb-3">
-                                                    <label for="package_id" class="form-label">Package</label>
-                                                    <select id="package_id" name="package_id_modal" class="form-control"
-                                                        required>
-                                                        @foreach ($packages as $package)
-                                                            <option value="{{ $package->id }}"
-                                                                {{ $booking->package->id == $package->id ? 'selected' : '' }}>
-                                                                {{ $package->package_name }} -
-                                                                {{ 'Rp.' . number_format($package->price, 0, ',', '.') }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="booking_date" class="form-label">Date</label>
-                                                    <input type="date" name="booking_date_modal"
-                                                        id="booking_date_{{ $booking->id }}"
-                                                        value="{{ $booking->booking_date }}"
-                                                        class="form-control"></input>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="booking_time" class="form-label">Time</label>
-                                                    <select name="booking_time_modal" class="form-control"
-                                                        id="booking_time_{{ $booking->id }}" required>
-                                                        @foreach ($times as $t)
-                                                            @php
-                                                                $booked =
-                                                                    $bookings
-                                                                        ->where('booking_date', $booking->booking_date)
-                                                                        ->where('booking_time', $t)
-                                                                        ->count() > 0;
-                                                                $isSelected =
-                                                                    \Carbon\Carbon::parse(
-                                                                        $booking->booking_time,
-                                                                    )->format('H:i') === $t;
-                                                            @endphp
-                                                            <option value="{{ $t }}"
-                                                                {{ $isSelected ? 'selected' : '' }}
-                                                                {{ $booked && !$isSelected ? 'disabled' : '' }}>
-                                                                {{ $t }}
-                                                                {{ $booked && !$isSelected ? '(Sudah Penuh)' : '' }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                        <div class="mb-3">
+                            <label for="package_id" class="form-label">Package</label>
+                            <select id="package_id" name="package_id" class="form-control" required>
+                                @foreach ($packages as $package)
+                                    <option value="{{ $package->id }}"
+                                        {{ $booking->package->id == $package->id ? 'selected' : '' }}>
+                                        {{ $package->package_name }} - {{ 'Rp.' . number_format($package->price, 0, ',', '.') }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="booking_date" class="form-label">Date</label>
+                            <input type="date" name="booking_date" id="booking_date_{{ $booking->id }}" value="{{ $booking->booking_date }}" class="form-control"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="booking_time" class="form-label">Time</label>
+                            <select name="booking_time" class="form-control" id="booking_time_{{ $booking->id }}" required>
+                                @foreach ($times as $t)
+                                    @php
+                                        $booked = $bookings->where('booking_date', $booking->booking_date)->where('booking_time', $t)->count() > 0;
+                                        $isSelected = \Carbon\Carbon::parse($booking->booking_time)->format('H:i') === $t
+                                    @endphp
+                                    <option value="{{ $t }}"
+                                       {{ $isSelected ? 'selected' : '' }}
+                                        {{ $booked && !$isSelected ? 'disabled' : '' }}>
+                                        {{ $t }} {{ $booked && !$isSelected ? '(Sudah Penuh)' : '' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
 
 
-
-                                                <!-- Footer Modal -->
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-primary">Simpan
-                                                        Perubahan</button>
-                                                </div>
+                        <!-- Footer Modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
 
 
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- =================================
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- =================================
     ================================= --}}
 
                         </tr>
@@ -299,28 +244,6 @@
     </div>
 
 
-    <script>
-        function confirmDelete(id) {
-            // cegah submit langsung
-
-            swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data Booking yang dihapus tidak bisa dikembalikan!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#aaa',
-                confirmButtonText: "Ya, hapus!",
-                cancelButtonText: "Batal",
-
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            });
-        }
-    </script>
 
 
 

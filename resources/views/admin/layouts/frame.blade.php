@@ -20,6 +20,7 @@
     <link href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     {{-- Sweetalert --}}
     <link href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet">
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
 </head>
 
 <body>
@@ -1023,7 +1024,7 @@
                     <p class="	font-w500 mb-0">Create Booking Plan Now</p>
                 </div>
                 <div class="copyright">
-                    <p><strong>Gymove Fitness Admin Dashboard</strong> © 2020 All Rights Reserved</p>
+                    <p><strong>Gymove Admin Dashboard</strong> © 2020 All Rights Reserved</p>
                     <p>Made with <span class="heart"></span> by DexignZone</p>
                 </div>
             </div>
