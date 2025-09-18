@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+
+use App\Models\UserDetail;
 use App\Models\Package;
 use App\Models\Booking;
 use App\Models\Payment;
@@ -27,7 +29,9 @@ class DashboardController extends Controller
 
         $data['page'] = 'Dashboard';
         $data['judul_page'] = 'Dashboard';
-        $data['users'] = User::all();
+        // $data['users'] = User::all();
+        // $data['users'] = User::with('detail')->get();
+        $data['users'] = Auth::user()->load('detail');
         $data['todayBookings'] = $todayBookings;
         $data['monthlyIncome'] = $monthlyIncome;
         $data['yearlyIncome'] = $yearlyIncome;

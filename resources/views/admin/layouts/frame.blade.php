@@ -898,11 +898,23 @@
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
                                     {{-- <img src="images/profile/17.jpg" width="20" alt="" /> --}}
-                                    <img src="{{ Storage::url("avatar/avatar-1.jpg") }}" width="20" alt="" />
+                                    {{-- <img src="{{ Storage::url('avatar/avatar-1.jpg') }}" width="20"
+                                        alt="" /> --}}
+                                        @php
+                                            $authUser = Auth::user();
+                                        @endphp
+                                    @if ($authUser->detail && $authUser->detail->photo_profile)
+                                        <img src="{{ Storage::url($authUser->detail->photo_profile) }}"
+                                            width="50" alt="profile" />
+                                    @else
+                                        <img src="{{ Storage::url('avatar/avatar-1.jpg') }}" width="50"
+                                            alt="default avatar" />
+                                    @endif
                                     <div class="header-info">
                                         <span class="text-black"><strong>{{ Auth::user()->name }}</strong></span>
                                         {{-- <p class="fs-12 mb-0">Super Admin</p> --}}
-                                        <p class="fs-12 mb-0">{{ Auth::check() ? Auth::user()->getRoleNames()->first() : '---' }}</p>
+                                        <p class="fs-12 mb-0">
+                                            {{ Auth::check() ? Auth::user()->getRoleNames()->first() : '---' }}</p>
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
@@ -972,6 +984,13 @@
                     </li>
 
 
+                    {{-- <li class="{{ request()->is('packages') ? 'mm-active' : '' }}"> --}}
+                    <li class="{{ $page == 'User' ? 'mm-active' : '' }}">
+                        <a href="{{ route('user.index') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-user-3"></i>
+                            <span class="nav-text">Data User</span>
+                        </a>
+                    </li>
                     {{-- <li class="{{ request()->is('packages') ? 'mm-active' : '' }}"> --}}
                     <li class="{{ $page == 'Package' ? 'mm-active' : '' }}">
                         <a href="{{ route('packages.index') }}" class="ai-icon" aria-expanded="false">

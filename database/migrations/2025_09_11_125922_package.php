@@ -45,6 +45,21 @@ return new class extends Migration
         $table->softDeletes();
         });
 
+        Schema::create('user_details', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+        $table->text('photo_profile')->nullable();
+        $table->string('address')->nullable();
+        $table->string('kecamatan')->nullable();
+        $table->string('kabupaten')->nullable();
+        $table->string('provinsi')->nullable();
+        $table->string('phone_number')->nullable();
+        $table->string('post_code')->nullable();
+
+        $table->timestamps();
+        $table->softDeletes();
+        });
+
 
     }
 
