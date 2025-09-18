@@ -41,7 +41,7 @@ Route::resource('packages', PackageController::class);
 
 //source chatgpt
 Route::get('/booking', [BookingController::class, 'index'])->name('admin.booking.index');
-Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
 Route::get('/booking/{id}/show', [BookingController::class, 'show'])->name('booking.show');
 Route::get('/booking/{id}/edit', [BookingController::class, 'edit'])->name('booking.edit');
 Route::put('/booking/{id}/update', [BookingController::class, 'update'])->name('booking.update');
@@ -57,7 +57,7 @@ Route::post('/booking/{id}/payment', [BookingController::class, 'makePayment'])-
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/{id}/show', [UserController::class, 'show'])->name('user.show');
 Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
-Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
 Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
 Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
 Route::delete('/user/{id}/delete', [UserController::class, 'destroy'])->name('user.destroy');

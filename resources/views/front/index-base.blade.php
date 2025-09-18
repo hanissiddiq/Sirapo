@@ -111,8 +111,7 @@
                             <td data-order="{{ \Carbon\Carbon::parse($booking->booking_time)->format('H:i') }}">
                                 {{ \Carbon\Carbon::parse($booking->booking_time)->format('H:i') }}
                             </td>
-                            {{-- <td>{{ $booking->user->name }}</td> --}}
-                            <td>{{ $booking->user ? $booking->user->name : 'No User' }}</td>
+                            <td>{{ $booking->user->name }}</td>
 
                             @php
                                 $status = strtolower($booking->status ?? '');
@@ -158,7 +157,7 @@
                                     </button>
                                 </form>
                                 <button {{-- onclick="callQueue('Nomor antrean {{ $booking->queue_number }}, atas nama {{ $booking->user->name }}, silahkan menuju ke ruang studio, Terima kasih...')" --}}
-                                    onclick="callQueue('Nomor Antrean {{ $booking->queue_number }} dengan Nomor Booking {{ $booking->id }}, atas nama {{ $booking->user ? $booking->user->name : 'No User' }}, silahkan menuju ke ruang studio, Terima kasih...')"
+                                    onclick="callQueue('Nomor Antrean {{ $booking->queue_number }} dengan Nomor Booking {{ $booking->id }}, atas nama {{ $booking->user->name }}, silahkan menuju ke ruang studio, Terima kasih...')"
                                     class="btn-xs btn btn-primary">Call Queue</button>
                                 @endhasanyrole
                             </td>
@@ -190,8 +189,8 @@
                                                 <div class="mb-3">
                                                     <label for="user" class="form-label">Nama</label>
                                                     <input type="hidden" name="user_name_modal"
-                                                        value="{{ $booking->user ? $booking->user->id : 'No IDUser' }}"></input>
-                                                    <input type="text" name="user" value="{{ $booking->user ? $booking->user->name : 'No User' }}"
+                                                        value="{{ $booking->user->id }}"></input>
+                                                    <input type="text" name="user" value="{{ $booking->user->name }}"
                                                         disabled class="form-control"></input>
                                                 </div>
                                                 <div class="mb-3">

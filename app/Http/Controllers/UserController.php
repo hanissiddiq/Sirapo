@@ -27,6 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
+
         Auth::user();
         $data['page'] = 'User';
         $data['judul_page'] = 'Create User';
@@ -38,22 +39,38 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // Auth::user();
+        $data['page'] = 'User';
+        $data['judul_page'] = 'Create User';
         //
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required'],
+
+                // validasi untuk userdetail
+            'photo_profile' => ['nullable', 'image', 'mimes:jpeg,png,jpg,svg', 'max:2048'],
+            'address'       => ['nullable', 'string', 'max:255'],
+            'kecamatan'     => ['nullable', 'string', 'max:255'],
+            'kabupaten'     => ['nullable', 'string', 'max:255'],
+            'provinsi'      => ['nullable', 'string', 'max:255'],
+            'phone_number'  => ['nullable', 'string', 'max:20'],
+            'post_code'     => ['nullable', 'string', 'max:20'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+
         ]);
 
         // assign role dari input form
         $user->assignRole($request->role);
-        return view('admin.users.index');
+
+        $data['users'] = User::all();
+        // dd($data);
+        return view('admin.users.index', $data);
     }
 
     /**
@@ -152,5 +169,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+         User::destroy($id);
+        return redirect()->route('user.index')->with('success', 'User deleted successfully.');
     }
 }

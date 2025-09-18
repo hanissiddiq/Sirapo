@@ -101,7 +101,7 @@
                                                     <i class="fa fa-pencil"></i>
                                                 </button> --}}
                                                 <form id="delete-form-{{ $user->id }}"
-                                                    action="{{ route('booking.destroy', $user->id) }}" method="POST">
+                                                    action="{{ route('user.destroy', $user->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger shadow btn-xs sharp mr-1"

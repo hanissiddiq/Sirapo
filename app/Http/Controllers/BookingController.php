@@ -32,6 +32,7 @@ class BookingController extends Controller
 
         if (auth()->user()->hasRole('owner')) {
             $data['bookings'] = Booking::all();
+            // dd($data);
         }
        elseif (auth()->user()->hasRole('staff')) {
             $data['bookings'] = Booking::where('booking_date', $date)->get();
