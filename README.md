@@ -100,6 +100,15 @@ Akses aplikasi melalui [http://localhost:8000](http://localhost:8000)
   - Email: `admin@sirapo.com`
   - Password: `password`
 
+  **owner**
+  - Email: `owner@sirapo.com`
+  - Password: `mantap`
+ **Customer**
+  - Email: `customer@sirapo.com`
+  - Password: `mantap`
+ **Staff**
+  - Email: `staff@sirapo.com`
+  - Password: `mantap`
 - **User**
   - Registrasi melalui halaman register
 

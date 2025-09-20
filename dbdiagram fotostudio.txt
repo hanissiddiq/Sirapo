@@ -1,0 +1,70 @@
+sumber https://chatgpt.com/share/68c529cd-4b50-8011-b61a-08231bd44311
+https://chatgpt.com/share/68c5322b-8968-8008-af97-9bfbb194387b
+
+booking max 8 perhari
+https://chatgpt.com/share/68c7b1f1-33ec-8011-8541-6906eb44f0be
+
+Table users {
+  id                bigint [pk, increment]
+  name              varchar(255)
+  email             varchar(255) [unique]
+  email_verified_at datetime [null]
+  password          varchar(255)
+  remember_token    varchar(100) [null]
+  created_at        datetime [null]
+  updated_at        datetime [null]
+}
+
+Table packages {
+  id              integer [pk, increment]
+  package_name    varchar(255)
+  package_image   text
+  price           decimal(10, 2)
+  description     text
+  status          varchar(50)
+  created_at      timestamp
+  updated_at      timestamp
+  deleted_at      timestamp [null]
+}
+
+Table bookings {
+  id            integer [pk, increment]
+  user_id       bigint
+  booking_date  date
+  booking_time  time
+  status        varchar(50) [default: 'pending']
+  created_at    timestamp
+  updated_at    timestamp
+
+  user_name     varchar(255) [null]
+}
+
+Table booking_items {
+  id          integer [pk, increment]
+  booking_id  integer
+  package_id  integer
+  qty         int [default: 1]
+  price       decimal(10, 2) // snapshot harga saat booking
+  subtotal    decimal(10, 2) // boleh dihitung dari qty*price
+  created_at  timestamp
+  updated_at  timestamp
+}
+
+Enum payment_method_enum {
+  cash
+  bank_transfer
+}
+
+Table payments {
+  id              integer [pk, increment]
+  booking_id      integer
+  payment_method  payment_method_enum
+  amount          decimal(10, 2)
+  created_at      timestamp
+  updated_at      timestamp
+}
+
+Ref: bookings.user_id > users.id
+Ref: booking_items.booking_id > bookings.id
+Ref: booking_items.package_id > packages.id
+Ref: payments.booking_id > bookings.id
